@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 import React, { useContext, useEffect, useState } from "react";
 import CourseCard from "./CourseCard";
 import { UserCourseListContext } from "@/app/_context/UserCourseListContext";
+import { index } from "drizzle-orm/mysql-core";
 
 function UserCourseList() {
   const { user } = useUser();
@@ -34,13 +35,23 @@ function UserCourseList() {
     <div className="mt-10">
       <h2 className="font-medium text-xl">My AI Courses</h2>
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {courseList?.map((course, ind) => (
-          <CourseCard
-            course={course}
-            key={ind}
-            refreshData={() => getUserCourse()}
-          />
-        ))}
+        {courseList?.length > 0
+          ? courseList?.map((course, ind) => (
+              <CourseCard
+                course={course}
+                key={ind}
+                refreshData={() => getUserCourse()}
+              />
+            ))
+          : [1, 2, 3, 4, 5].map((item, index) => (
+              <div
+                key={index}
+                className="w-full mt-5
+                 bg-slate-200 
+                 animate-pulse 
+                 rounded-lg h-[270px]"
+              ></div>
+            ))}
       </div>
     </div>
   );

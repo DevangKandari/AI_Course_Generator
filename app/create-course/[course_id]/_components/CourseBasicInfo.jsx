@@ -8,6 +8,7 @@ import { CldUploadWidget } from "next-cloudinary";
 import { CourseList } from "@/configs/schema";
 import { eq } from "drizzle-orm";
 import { db } from "@/configs/db";
+import Link from "next/link";
 
 function CourseBasicInfo({ course, refreshData, edit = true }) {
   const [url, setUrl] = useState("/creative.jpg");
@@ -43,7 +44,11 @@ function CourseBasicInfo({ course, refreshData, edit = true }) {
               <HiMiniPuzzlePiece />
               {course?.category}
             </h2>
-            <Button className="mt-10 w-full">Start</Button>
+            {!edit && (
+              <Link href={"/course/" + course?.courseId + "/start"}>
+                <Button className="mt-10 w-full">Start</Button>
+              </Link>
+            )}
           </div>
           <div>
             <CldUploadWidget
