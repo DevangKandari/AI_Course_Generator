@@ -41,7 +41,7 @@ export const GenerateCourseLayout_Ai = model.startChat({
   ],
 });
 
-export const GenerateChpterContent_AI = model.startChat({
+export const GenerateChapterContent_AI = model.startChat({
   generationConfig,
   history: [
     {

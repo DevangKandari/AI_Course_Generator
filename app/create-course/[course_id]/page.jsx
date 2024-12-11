@@ -1,21 +1,25 @@
 "use client";
 import { db } from "@/configs/db";
-import { CourseList } from "@/configs/schema";
+import { CourseList, Chapters } from "@/configs/schema";
 import { useUser } from "@clerk/nextjs";
-import { and, eq } from "drizzle-orm";
+import { and, eq, jaccardDistance } from "drizzle-orm";
 import React, { useEffect, useState, useCallback } from "react";
 import CourseBasicInfo from "./_components/CourseBasicInfo";
 import CourseDeatil from "./_components/CourseDeatil";
 import ChapterList from "./_components/ChapterList";
 import { Button } from "@/components/ui/button";
-import { GenerateChpterContent_AI } from "@/configs/AiModel";
+import { GenerateChapterContent_AI} from "@/configs/AiModel";
 import LoadingDialog from "../_components/LoadingDialog";
+import service from "@/configs/service";
+import { useRouter } from "next/navigation";
 
 function CourseLayout({ params }) {
   const { user } = useUser();
   const [course, setCourse] = useState([]);
   const [loading, setLoading] = useState(false);
   const { course_id } = React.use(params);
+
+  const router=useRouter();
 
   const getCourse = useCallback(async () => {
     if (!user) return;
@@ -38,25 +42,42 @@ function CourseLayout({ params }) {
 
   function GenerateChapterContent() {
     setLoading(true);
-    const chapters = course?.coureOutput?.chapters;
+    const chapters = course?.courseOutput?.chapters;
     chapters.forEach(async (chapter, ind) => {
       const PROMPT =
         "Explain the concept in detail on the topic:" +
         course?.name +
         ", Chapter:" +
-        chapter?.name +
+        chapter?.chapterName +
         ", in JSON format with list of array with field as Title , Explanation of given chapter in detail, Code Example(Code Field in <precode> format) if applicable";
-      if (ind == 0) {
+      // if (ind == 0) {
         try {
-          const result = await GenerateChpterContent_AI(PROMPT);
+          let videoId = '';
+          service.getVideos(course?.name+':' + chapter?.chapterName).then(resp=>{
+            console.log(resp);
+            videoId = resp[0]?.id?.videoId
+          })
+          const result = await GenerateChapterContent_AI.sendMessage(PROMPT);
           console.log(result?.response?.text());
-
+          const content = JSON.parse(result?.response?.text())
+          
+          await db.insert(Chapters).values({
+            chapterId:ind,
+            courseId:course?.courseId,
+            content:content,
+            videoId:videoId
+          })
           setLoading(false);
+          await db.update(CourseList).set({
+            publish:true
+          })
+          router.replace('/create-course/'+course?.courseId+"/finish")
         } catch (e) {
           console.log(e);
           setLoading(false);
         }
-      }
+        
+      // }
     });
   }
 
@@ -64,7 +85,7 @@ function CourseLayout({ params }) {
     <div className="mt-10 px-7 md:px-20 lg:px-44">
       <h2 className="font-bold text-center text-2xl">Course Layout</h2>
 
-      <LoadingDialog loader={loading} />
+      <LoadingDialog loading={loading} />
 
       {/* Basic Info */}
 

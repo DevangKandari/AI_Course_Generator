@@ -9,7 +9,7 @@ import { CourseList } from "@/configs/schema";
 import { eq } from "drizzle-orm";
 import { db } from "@/configs/db";
 
-function CourseBasicInfo({ course, refreshData }) {
+function CourseBasicInfo({ course, refreshData, edit = true }) {
   const [url, setUrl] = useState("/creative.jpg");
 
   async function handleClick() {
@@ -29,10 +29,12 @@ function CourseBasicInfo({ course, refreshData }) {
           <div>
             <h2 className="font-bol text-3xl">
               {course?.courseOutput?.courseName}{" "}
-              <EditCourseBasicInfo
-                course={course}
-                refreshData={() => refreshData(true)}
-              />
+              {edit && (
+                <EditCourseBasicInfo
+                  course={course}
+                  refreshData={() => refreshData(true)}
+                />
+              )}
             </h2>
             <p className="text-sm text-gray-400 mt-3">
               {course?.courseOutput?.description}
