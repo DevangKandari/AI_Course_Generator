@@ -14,12 +14,13 @@ function CourseBasicInfo({ course, refreshData, edit = true }) {
   const [url, setUrl] = useState("/creative.jpg");
 
   async function handleClick() {
+    console.log(url);
     const result = await db
       .update(CourseList)
       .set({
         courseBanner: url,
       })
-      .where(eq(CourseList.id, course?.id));
+      .where(eq(CourseList?.id, course?.id));
     console.log(result);
   }
 
@@ -54,8 +55,11 @@ function CourseBasicInfo({ course, refreshData, edit = true }) {
             <CldUploadWidget
               uploadPreset="my_uploads"
               onSuccess={({ event, info }) => {
-                setUrl(info.secure_url);
-                handleClick();
+                if (event == "success") {
+                  setUrl(info.secure_url);
+
+                  handleClick();
+                }
               }}
             >
               {({ open }) => (

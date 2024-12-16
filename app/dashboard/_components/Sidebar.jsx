@@ -20,23 +20,23 @@ function Sidebar() {
   const Menu = [
     { id: 1, name: "Home", icon: <HiHome />, path: "/dashboard" },
     {
-      id: 1,
+      id: 2,
       name: "Explore",
       icon: <HiMiniSquare3Stack3D />,
       path: "/dashboard/explore",
     },
-    {
-      id: 1,
-      name: "Upgrade",
-      icon: <HiShieldCheck />,
-      path: "/dashboard/upgrade",
-    },
-    {
-      id: 1,
-      name: "Logout",
-      icon: <HiMiniArrowRightStartOnRectangle />,
-      path: "/dashboard/logout",
-    },
+    // {
+    //   id: 2,
+    //   name: "Upgrade",
+    //   icon: <HiShieldCheck />,
+    //   path: "/dashboard/upgrade",
+    // },
+    // {
+    //   id: 1,
+    //   name: "Logout",
+    //   icon: <HiMiniArrowRightStartOnRectangle />,
+    //   path: "/dashboard/logout",
+    // },
   ];
 
   const path = usePathname();
@@ -67,7 +67,7 @@ function Sidebar() {
         ))}
       </ul>
 
-      <div className="absolute bottom-10 w-[80%]">
+      {/* <div className="absolute bottom-10 w-[80%]">
         <Progress value={(userCourseList?.length / 5) * 100} />
         <h2 className="text-sm my-2">
           {userCourseList?.length} out of 5 course created
@@ -75,7 +75,7 @@ function Sidebar() {
         <h2 className="text-xs text-gray-500">
           upgrade your profile for unlimited course generation
         </h2>
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -8,7 +8,7 @@ import CourseBasicInfo from "./_components/CourseBasicInfo";
 import CourseDeatil from "./_components/CourseDeatil";
 import ChapterList from "./_components/ChapterList";
 import { Button } from "@/components/ui/button";
-import { GenerateChapterContent_AI} from "@/configs/AiModel";
+import { GenerateChapterContent_AI } from "@/configs/AiModel";
 import LoadingDialog from "../_components/LoadingDialog";
 import service from "@/configs/service";
 import { useRouter } from "next/navigation";
@@ -19,7 +19,7 @@ function CourseLayout({ params }) {
   const [loading, setLoading] = useState(false);
   const { course_id } = React.use(params);
 
-  const router=useRouter();
+  const router = useRouter();
 
   const getCourse = useCallback(async () => {
     if (!user) return;
@@ -51,32 +51,34 @@ function CourseLayout({ params }) {
         chapter?.chapterName +
         ", in JSON format with list of array with field as Title , Explanation of given chapter in detail, Code Example(Code Field in <precode> format) if applicable";
       // if (ind == 0) {
-        try {
-          let videoId = '';
-          service.getVideos(course?.name+':' + chapter?.chapterName).then(resp=>{
+      try {
+        let videoId = "";
+        service
+          .getVideos(course?.name + ":" + chapter?.chapterName)
+          .then((resp) => {
             console.log(resp);
-            videoId = resp[0]?.id?.videoId
-          })
-          const result = await GenerateChapterContent_AI.sendMessage(PROMPT);
-          console.log(result?.response?.text());
-          const content = JSON.parse(result?.response?.text())
-          
-          await db.insert(Chapters).values({
-            chapterId:ind,
-            courseId:course?.courseId,
-            content:content,
-            videoId:videoId
-          })
-          setLoading(false);
-          await db.update(CourseList).set({
-            publish:true
-          })
-          router.replace('/create-course/'+course?.courseId+"/finish")
-        } catch (e) {
-          console.log(e);
-          setLoading(false);
-        }
-        
+            videoId = resp[0]?.id?.videoId;
+          });
+        const result = await GenerateChapterContent_AI.sendMessage(PROMPT);
+        console.log(result?.response?.text());
+        const content = JSON.parse(result?.response?.text());
+
+        await db.insert(Chapters).values({
+          chapterId: ind,
+          courseId: course?.courseId,
+          content: content,
+          videoId: videoId,
+        });
+        setLoading(false);
+        await db.update(CourseList).set({
+          publish: true,
+        });
+        router.replace("/create-course/" + course?.courseId + "/finish");
+      } catch (e) {
+        console.log(e);
+        setLoading(false);
+      }
+
       // }
     });
   }
@@ -89,7 +91,11 @@ function CourseLayout({ params }) {
 
       {/* Basic Info */}
 
-      <CourseBasicInfo course={course} refreshData={() => getCourse()} />
+      <CourseBasicInfo
+        edit={true}
+        course={course}
+        refreshData={() => getCourse()}
+      />
 
       {/* course detail */}
 

@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import React from "react";
 
 function Hero() {
@@ -20,12 +22,11 @@ function Hero() {
             </p>
 
             <div className="mt-8 flex flex-wrap justify-center gap-4">
-              <a
-                className="block w-full rounded bg-primary px-12 py-3 text-sm font-medium text-white shadow hover:bg-red-700 focus:outline-none focus:ring active:bg-red-500 sm:w-auto"
-                href="#"
-              >
-                Get Started
-              </a>
+              <Link href={"/dashboard"}>
+                <Button className="flex flex-col items-center w-full rounded bg-primary px-12 py-3 text-sm font-medium text-white shadow hover:bg-purple-700 focus:outline-none focus:ring active:bg-red-500 sm:w-auto">
+                  Get Started
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
