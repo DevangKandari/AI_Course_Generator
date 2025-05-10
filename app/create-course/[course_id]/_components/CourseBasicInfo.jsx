@@ -52,6 +52,14 @@ function CourseBasicInfo({ course, refreshData, edit = true }) {
             )}
           </div>
           <div>
+            <Image
+              src={url}
+              alt={"course logo"}
+              height={300}
+              width={300}
+              className="w-full rounded-xl h-[250px] object-cover"
+              onClick={() => open()}
+            />
             <CldUploadWidget
               uploadPreset="my_uploads"
               onSuccess={({ event, info }) => {
@@ -62,16 +70,7 @@ function CourseBasicInfo({ course, refreshData, edit = true }) {
                 }
               }}
             >
-              {({ open }) => (
-                <Image
-                  src={url}
-                  alt={"course logo"}
-                  height={300}
-                  width={300}
-                  className="w-full rounded-xl h-[250px] object-cover"
-                  onClick={() => open()}
-                />
-              )}
+              {({ open }) => <Button onClick={open}>Edit Image</Button>}
             </CldUploadWidget>
           </div>
         </div>

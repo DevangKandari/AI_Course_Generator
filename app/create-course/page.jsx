@@ -49,11 +49,7 @@ function CreateCourse() {
 
   const checkStatus = () => {
     if (activeIndex === 0 && !userCourseInput?.category) return true;
-    if (
-      activeIndex === 1 &&
-      (!userCourseInput?.topic || !userCourseInput?.description)
-    )
-      return true;
+    if (activeIndex === 1 && !userCourseInput?.topic) return true;
     if (
       activeIndex === 2 &&
       (!userCourseInput?.level ||
@@ -95,6 +91,7 @@ function CreateCourse() {
   };
 
   async function SaveCourseLayoutInDb(courseLayout) {
+    console.log(userCourseInput);
     const id = uuid4();
     try {
       await db.insert(CourseList).values({
@@ -106,6 +103,7 @@ function CreateCourse() {
         createdBy: user?.primaryEmailAddress?.emailAddress || null,
         userName: user?.fullName || null,
         userProfileImage: user?.imageUrl || null,
+        includeVideo: userCourseInput?.displayVideo,
       });
       router.replace("/create-course/" + id);
     } catch (error) {

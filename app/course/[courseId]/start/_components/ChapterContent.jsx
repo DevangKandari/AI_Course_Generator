@@ -17,7 +17,7 @@ function ChapterContent({ chapter, content }) {
       <p className="text-gray-500">{chapter?.about}</p>
 
       <div className="flex justify-center my-6">
-        <YouTube videoid={content?.videoid} opts={opts} />
+        <YouTube videoId={content?.videoId} opts={opts} />
       </div>
 
       <div>

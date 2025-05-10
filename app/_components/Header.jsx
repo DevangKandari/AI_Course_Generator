@@ -12,7 +12,6 @@ function Header() {
         width={100}
         alt={"logo"}
       />
-      <Link href={"/dashboard"}><Button>Get Started</Button></Link>
     </div>
   );
 }

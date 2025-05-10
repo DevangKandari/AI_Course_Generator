@@ -23,7 +23,7 @@ function Hero() {
 
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <Link href={"/dashboard"}>
-                <Button className="flex flex-col items-center w-full rounded bg-primary px-12 py-3 text-sm font-medium text-white shadow hover:bg-purple-700 focus:outline-none focus:ring active:bg-red-500 sm:w-auto">
+                <Button className="flex flex-col items-center w-full rounded bg-primary px-12 py-3 text-sm font-medium text-white shadow hover:bg-purple-700 focus:outline-none focus:ring active:bg-purple-300 sm:w-auto">
                   Get Started
                 </Button>
               </Link>
